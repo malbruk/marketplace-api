@@ -46,7 +46,7 @@ namespace Marketplace.Data.Repositories
         public async Task<Category> UpdateAsync(Category category)
         {
             var existCategory = await GetByIdAsync(category.Id);
-            _dataContext.Entry(existCategory).CurrentValues.SetValues(existCategory);
+            _dataContext.Entry(existCategory).CurrentValues.SetValues(category);
             await _dataContext.SaveChangesAsync();
             return existCategory;
         }
