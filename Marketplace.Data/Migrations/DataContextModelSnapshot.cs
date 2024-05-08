@@ -45,9 +45,16 @@ namespace Marketplace.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
@@ -189,11 +196,9 @@ namespace Marketplace.Data.Migrations
 
             modelBuilder.Entity("Marketplace.Core.Entities.Category", b =>
                 {
-                    b.HasOne("Marketplace.Core.Entities.Category", "Parent")
-                        .WithMany()
+                    b.HasOne("Marketplace.Core.Entities.Category", null)
+                        .WithMany("Children")
                         .HasForeignKey("ParentId");
-
-                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("Marketplace.Core.Entities.Order", b =>
@@ -224,6 +229,11 @@ namespace Marketplace.Data.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Marketplace.Core.Entities.Category", b =>
+                {
+                    b.Navigation("Children");
                 });
 
             modelBuilder.Entity("Marketplace.Core.Entities.Order", b =>

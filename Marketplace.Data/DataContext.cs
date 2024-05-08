@@ -1,5 +1,6 @@
 ﻿using Marketplace.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +12,8 @@ namespace Marketplace.Data
 {
     public class DataContext : DbContext
     {
+        private readonly IConfiguration _configuration;
+
         public DbSet<Product> Products { get; set; }
 
         public DbSet<Category> Categories { get; set; }
@@ -19,9 +22,13 @@ namespace Marketplace.Data
 
         public DbSet<Order> Orders { get; set; }
 
+        public DataContext(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=marketplace_db");
+            optionsBuilder.UseSqlServer(_configuration["DbConnectionString"]);
             optionsBuilder.LogTo((message) => Debug.Write(message));
         }
 

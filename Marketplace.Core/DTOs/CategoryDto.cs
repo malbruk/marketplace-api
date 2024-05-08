@@ -13,7 +13,13 @@ namespace Marketplace.Core.DTOs
 
         public string Name { get; set; }
 
-        public CategoryDto? Parent { get; set; }
+        public string Icon { get; set; }
+
+        public int Order { get; set; }
+
+        public int? ParentId { get; set; }
+
+        public List<CategoryDto>? Children { get; set; }
 
     }
 }

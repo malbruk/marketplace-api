@@ -44,16 +44,17 @@ namespace Marketplace.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ProductPostModel model)
         {
-            var list = new List<Category>();
-            foreach(var catId in model.CategoriesIds)
-            {
-                var cat = await _categoryService.GetByIdAsync(catId);
-                if(cat is null)
-                {
-                    return NotFound();
-                }
-                list.Add(cat);
-            }
+            //var list = new List<Category>();
+            //foreach(var catId in model.CategoriesIds)
+            //{
+            //    var cat = await _categoryService.GetByIdAsync(catId);
+            //    if(cat is null)
+            //    {
+            //        return NotFound();
+            //    }
+            //    list.Add(cat);
+            //}
+            var list = model.CategoriesIds.Select(cId => new Category { Id = cId });
             var product = _mapper.Map<Product>(model);
             product.Categories = list;
             await _productService.AddAsync(product);

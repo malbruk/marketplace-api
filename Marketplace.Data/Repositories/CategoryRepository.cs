@@ -40,7 +40,7 @@ namespace Marketplace.Data.Repositories
 
         public async Task<Category> GetByIdAsync(int categoryId)
         {
-            return await _dataContext.Categories.Include(c => c.Parent).FirstAsync(c => c.Id == categoryId);
+            return await _dataContext.Categories.Include(c => c.Children).FirstAsync(c => c.Id == categoryId);
         }
 
         public async Task<Category> UpdateAsync(Category category)

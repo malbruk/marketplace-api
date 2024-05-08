@@ -5,6 +5,7 @@ using Marketplace.Core.Services;
 using Marketplace.Data;
 using Marketplace.Data.Repositories;
 using Marketplace.Service;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,7 @@ app.UseHttpsRedirection();
 app.UseCors();
 
 app.UseAuthorization();
+
 
 app.MapControllers();
 

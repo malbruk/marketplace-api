@@ -27,7 +27,9 @@ namespace Marketplace.API.Controllers
         {
             //וזאת כיון שהיא נשלפת בכל מקרה שהרי גם היא בטבלת קטגוריות. (כלומר, זה קורה כשיש קשר לאותה טבלה עצמה.) Include נשים לב שבמקרה זה קטגוריית האב תיכלל בשליפה למרות שאין
             var categories = await _categoryService.GetAllAsync();
-            return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categories));
+            var categoriesDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories);
+            var parents = categoriesDtos.Where(c => c.ParentId is null);
+            return Ok(parents);
         }
 
         // GET api/<CategoriesController>/5
