@@ -11,7 +11,7 @@ namespace Marketplace.Core.Services
     {
         Task<IEnumerable<Order>> GetAllAsync();
 
-        Task<Order> GetByIdAsync(int orderId);
+        Task<Order?> GetByIdAsync(int orderId);
 
         Task<Order> AddAsync(Order order);
 

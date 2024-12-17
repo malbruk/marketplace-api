@@ -11,7 +11,7 @@ namespace Marketplace.Core.Services
     {
         Task<IEnumerable<Product>> GetAllAsync();
 
-        Task<Product> GetByIdAsync(int productId);
+        Task<Product?> GetByIdAsync(int productId);
 
         Task<Product> AddAsync(Product product);
 

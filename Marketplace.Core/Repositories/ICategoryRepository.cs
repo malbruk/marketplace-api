@@ -7,16 +7,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Core.Repositories
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepository : IRepository<Category>
     {
-        Task<IEnumerable<Category>> GetAllAsync();
-
-        Task<Category> GetByIdAsync(int categoryId);
-
-        Task<Category> AddAsync(Category category);
-
-        Task<Category> UpdateAsync(Category category);
-
-        Task DeleteAsync(int categoryId);
     }
 }

@@ -36,6 +36,9 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(PostModelsMappingProfile));
 builder.Services.AddDbContext<DataContext>();
 
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

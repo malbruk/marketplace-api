@@ -7,16 +7,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Core.Repositories
 {
-    public interface ICustomerRepository
+    public interface ICustomerRepository : IRepository<Customer>
     {
-        Task<IEnumerable<Customer>> GetAllAsync();
-
-        Task<Customer> GetByIdAsync(int customerId);
-
-        Task<Customer> AddAsync(Customer customer);
-
-        Task<Customer> UpdateAsync(Customer customer);
-
-        Task DeleteAsync(int customerId);
     }
 }

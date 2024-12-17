@@ -9,38 +9,40 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Service
 {
-    public class CustomerService : ICustomerService
+    public class CustomerService(IRepositoryManager respositoryManager) : ICustomerService
     {
-        private readonly ICustomerRepository _customerRepository;
+        private readonly IRepositoryManager _respositoryManager = respositoryManager;
 
-        public CustomerService(ICustomerRepository customerRepository)
-        {
-            _customerRepository = customerRepository;
-        }
 
         public async Task<Customer> AddAsync(Customer customer)
         {
-            return await _customerRepository.AddAsync(customer);
+            _respositoryManager.Customers.Add(customer);
+            await _respositoryManager.SaveAsync();
+            return customer;
         }
 
         public async Task DeleteAsync(int customerId)
         {
-            await _customerRepository.DeleteAsync(customerId);
+            var customer = await GetByIdAsync(customerId);
+            _respositoryManager.Customers.Delete(customer);
+            await _respositoryManager.SaveAsync();
         }
 
         public async Task<IEnumerable<Customer>> GetAllAsync()
         {
-            return await _customerRepository.GetAllAsync();
+            return await _respositoryManager.Customers.GetListAsync();
         }
 
-        public async Task<Customer> GetByIdAsync(int customerId)
+        public async Task<Customer?> GetByIdAsync(int customerId)
         {
-            return await _customerRepository.GetByIdAsync(customerId);
+            return await _respositoryManager.Customers.GetByIdAsync(customerId);
         }
 
         public async Task<Customer> UpdateAsync(Customer customer)
         {
-            return await _customerRepository.UpdateAsync(customer);
+            _respositoryManager.Customers.Update(customer);
+            await _respositoryManager.SaveAsync();
+            return customer;
         }
     }
 }

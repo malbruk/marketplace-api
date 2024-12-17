@@ -9,38 +9,39 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Service
 {
-    public class OrderService : IOrderService
+    public class OrderService(IRepositoryManager repositoryManager) : IOrderService
     {
-        private readonly IOrderRepository _orderRepository;
-
-        public OrderService(IOrderRepository orderRepository)
-        {
-            _orderRepository = orderRepository;
-        }
+        private readonly IRepositoryManager _repositoryManager = repositoryManager;
 
         public async Task<Order> AddAsync(Order order)
         {
-            return await _orderRepository.AddAsync(order);
+            _repositoryManager.Orders.Add(order);
+            await _repositoryManager.SaveAsync();
+            return order;
         }
 
         public async Task DeleteAsync(int orderId)
         {
-            await _orderRepository.DeleteAsync(orderId);
+            var order = await GetByIdAsync(orderId);
+            _repositoryManager.Orders.Delete(order);
+            await _repositoryManager.SaveAsync();
         }
 
         public async Task<IEnumerable<Order>> GetAllAsync()
         {
-            return await _orderRepository.GetAllAsync();
+            return await _repositoryManager.Orders.GetListAsync();
         }
 
-        public Task<Order> GetByIdAsync(int orderId)
+        public Task<Order?> GetByIdAsync(int orderId)
         {
-            return _orderRepository.GetByIdAsync(orderId);
+            return _repositoryManager.Orders.GetByIdAsync(orderId);
         }
 
         public async Task<Order> UpdateAsync(Order order)
         {
-            return await _orderRepository.UpdateAsync(order);
+            _repositoryManager.Orders.Update(order);
+            await _repositoryManager.SaveAsync();
+            return order;
         }
     }
 }

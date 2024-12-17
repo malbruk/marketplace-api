@@ -11,7 +11,7 @@ namespace Marketplace.Core.Services
     {
         Task<IEnumerable<Customer>> GetAllAsync();
 
-        Task<Customer> GetByIdAsync(int customerId);
+        Task<Customer?> GetByIdAsync(int customerId);
 
         Task<Customer> AddAsync(Customer customer);
 

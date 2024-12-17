@@ -10,38 +10,41 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Service
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService(IRepositoryManager repositoryManager) : ICategoryService
     {
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly IRepositoryManager _repositoryManager = repositoryManager;
 
-        public CategoryService(ICategoryRepository categoryRepository)
-        {
-            _categoryRepository = categoryRepository;
-        }
 
         public async Task<Category> AddAsync(Category category)
         {
-            return await _categoryRepository.AddAsync(category);
+            _repositoryManager.Categories.Add(category);
+            await _repositoryManager.SaveAsync();
+            return category;
         }
 
         public async Task DeleteAsync(int categoryId)
         {
-            await _categoryRepository.DeleteAsync(categoryId);
+            var category = await _repositoryManager.Categories.GetByIdAsync(categoryId);
+            _repositoryManager.Categories.Delete(category);
+            await _repositoryManager.SaveAsync();
         }
 
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
-            return await _categoryRepository.GetAllAsync();
+            return await _repositoryManager.Categories.GetListAsync();
         }
 
         public async Task<Category> GetByIdAsync(int categoryId)
         {
-            return await _categoryRepository.GetByIdAsync(categoryId);
+            return await _repositoryManager.Categories.GetByIdAsync(categoryId);
         }
 
         public async Task<Category> UpdateAsync(Category category)
         {
-            return await _categoryRepository.UpdateAsync(category);
+            //TODO get from dto and update properties
+            _repositoryManager.Categories.Update(category);
+            await _repositoryManager.SaveAsync();
+            return category;
         }
     }
 }

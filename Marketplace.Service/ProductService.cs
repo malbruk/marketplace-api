@@ -10,40 +10,42 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Service
 {
-    public class ProductService : IProductService
+    public class ProductService(IRepositoryManager repositoryManager) : IProductService
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IRepositoryManager _repositoryManager = repositoryManager;
 
-        public ProductService(IProductRepository productRepository)
-        {
-            _productRepository = productRepository;
-        }
 
         public async Task<Product> AddAsync(Product product)
         {
             product.Slug = product.Name.Slugify();
-            return await _productRepository.AddAsync(product);
+            _repositoryManager.Products.Add(product);
+            await _repositoryManager.SaveAsync();
+            return product;
         }
 
         public async Task DeleteAsync(int productId)
         {
-            await _productRepository.DeleteAsync(productId);
+            var product = await GetByIdAsync(productId);
+            _repositoryManager.Products.Delete(product);
+            await _repositoryManager.SaveAsync();
         }
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            return await _productRepository.GetAllAsync();
+            return await _repositoryManager.Products.GetListAsync();
         }
 
-        public Task<Product> GetByIdAsync(int productId)
+        public Task<Product?> GetByIdAsync(int productId)
         {
-            return _productRepository.GetByIdAsync(productId);
+            return _repositoryManager.Products.GetByIdAsync(productId);
         }
 
-        public Task<Product> UpdateAsync(Product product)
+        public async Task<Product> UpdateAsync(Product product)
         {
             product.Slug = product.Name.Slugify();
-            return _productRepository.UpdateAsync(product);
+            _repositoryManager.Products.Update(product);
+            await _repositoryManager.SaveAsync();
+            return product;
         }
     }
 }
